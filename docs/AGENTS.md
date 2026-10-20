@@ -233,7 +233,7 @@ follows.
 ## Reading the project
 
 - `tandem status`: revision, who has it open, background jobs, missing
-  fonts and your edits still waiting for Mike's review. Run it first.
+  fonts and your edits still waiting for Jan's review. Run it first.
 - `tandem timeline --summary`: one line per track with its clip count, span
   and gaps, plus the markers. Then `tandem timeline --from 1:00 --to 2:00`
   for a part in full (`--words` adds what each voice clip says).

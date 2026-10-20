@@ -1127,7 +1127,7 @@ final class EditorBehaviourTests: XCTestCase {
             .placeMedia(mediaIDs: ["med_broll"], at: t(45), sourceStart: t(2), duration: t(4))
         ]))
         editor.settle()
-        XCTAssertEqual(editor.model.review.editCount, 1, "waiting for Mike")
+        XCTAssertEqual(editor.model.review.editCount, 1, "waiting for Jan")
         editor.model.playback.seek(to: t(5))
         editor.press("]")
         XCTAssertEqual(editor.model.playback.time.seconds, 45, accuracy: 0.5, "the playhead goes to the change")

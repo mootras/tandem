@@ -1,15 +1,15 @@
 ---
 name: tandem
-description: Edit Mike's videos in Tandem, his Mac video editor, through the `tandem` command. Use when a video folder has a .tandem project, or when asked to cut, trim, tighten, place B-roll, add titles, section cards, transitions, captions, stickers, music or sound effects, look at frames, render a review clip, check an edit, do Mike's comments on the timeline, or export a video in Tandem.
+description: Edit Jan's videos in Tandem, Jan's Mac video editor, through the `tandem` command. Use when a video folder has a .tandem project, or when asked to cut, trim, tighten, place B-roll, add titles, section cards, transitions, captions, stickers, music or sound effects, look at frames, render a review clip, check an edit, do Jan's comments on the timeline, or export a video in Tandem.
 ---
 
 # Tandem
 
-Tandem is Mike's video editor, built for working in turns with an agent:
-you edit the project through the `tandem` command, Mike reviews in the
-app, and the timeline shows him exactly what you changed. The guide's
+Tandem is Jan's video editor, built for working in turns with an agent:
+you edit the project through the `tandem` command, Jan reviews in the
+app, and the timeline shows Jan exactly what you changed. The guide's
 entry point is `docs/AGENTS.md` in the Tandem repo
-(`~/dev/me/tandem/docs/AGENTS.md` on Mike's Mac): how editing works, the
+(`~/Development/t3code/tandem/docs/AGENTS.md` on Jan's Mac): how editing works, the
 command index, and a table of recipes and topics in `docs/agents/` (B-roll,
 titles, cards, shorts, captions, sound, review and more). `tandem help
 <command>` gives a command's options, and `tandem help <edit command>`
@@ -26,9 +26,9 @@ Read the parts you need before editing.
 ## The loop
 
 Before you change anything, run `tandem status`. If it shows "waiting for
-Mike's review: N", stop there, change nothing, and ask him: "There are
+Jan's review: N", stop there, change nothing, and ask Jan: "There are
 still N unreviewed changes in Tandem. Are you sure you want me to
-continue?" Carry on only once he says yes. He reviews a round before
+continue?" Carry on only once Jan says yes. Jan reviews a round before
 asking for the next, and new edits on top of unreviewed ones mix the two
 rounds up.
 
@@ -53,10 +53,10 @@ rounds up.
    `--condition-on-previous-text False`, or it loops one phrase through
    the quiet).
 2. **Edit in labelled batches.** `tandem apply '{"label": "B-roll over the
-   config file", "commands": [...]}'` makes one undo step, which Mike reads
+   config file", "commands": [...]}'` makes one undo step, which Jan reads
    by its label. Pass `--expect <revision>` from the read you based the
    edit on (`tandem status --revision` prints just the number), not one
-   taken right before applying, so you never edit over his changes. Tandem
+   taken right before applying, so you never edit over Jan's changes. Tandem
    finding new media doesn't make it stale. On a stale revision, read
    again. Try big batches with `--dry-run` first. Name tracks by name
    (`"trackID": "Music"`) rather than looking up IDs, and give one
@@ -65,7 +65,7 @@ rounds up.
    For a job that touches many things at once (every caption, every push),
    write a short script against the SDK in the Tandem repo's
    `sdk/` folder instead of hand-building JSON or throwaway Python:
-   `~/.bun/bin/bun ~/dev/me/tandem/sdk/run.ts "<name>.tandem" script.ts`
+   `~/.bun/bin/bun ~/Development/t3code/tandem/sdk/run.ts "<name>.tandem" script.ts`
    (or `-e '<code>'`). `t.project()` finds clips, transitions and captions,
    `t.edit(label, commands)` dry-runs then applies one labelled batch against
    the revision you read, and it prints only what the script returns.
@@ -84,8 +84,8 @@ rounds up.
    `--step 0.2` for finer rows), `tandem clip T T --tracks Music
    --audio-only` renders a stem to listen to, and `tandem assets show
    <id>` gives an asset's prompt, licence, loudness and file instead of
-   its `meta.json`. If Mike says a gain change plays late or not at all,
-   believe him and run `tandem loudness --from T --to T --gains`: it
+   its `meta.json`. If Jan says a gain change plays late or not at all,
+   believe it and run `tandem loudness --from T --to T --gains`: it
    checks the render against the gain lanes and says by how much a change
    lands late.
 4. **Check.** `tandem check --changed` before you hand back. It renders
@@ -106,17 +106,17 @@ rounds up.
    - low frame rates: the screen recording moving at a few frames a second
      (macOS recorded it slowly). Cover it with the camera full screen, as
      Mike did in the Tandem video, or B-roll, or cut it.
-5. **Hand back.** Open the project in the app for Mike with
+5. **Hand back.** Open the project in the app for Jan with
    `open "<video folder>/<name>.tandem"` (skip it if `tandem status` says
-   the app already has it open), rather than asking him to open it. Then
-   tell him in a few lines what you changed and why. Your edits stay
-   highlighted on his timeline until he plays through them or marks them
-   reviewed; that's his to do.
+   the app already has it open), rather than asking Jan to open it. Then
+   tell Jan in a few lines what you changed and why. Your edits stay
+   highlighted on the timeline until Jan plays through them or marks them
+   reviewed; that's Jan's to do.
 
-## Mike's comments
+## Jan's comments
 
-While he reviews, Mike leaves comments at moments on the timeline ("cut
-the umm here"). When he asks you to look at them, `tandem comments` lists
+While reviewing, Jan leaves comments at moments on the timeline ("cut
+the umm here"). When Jan asks you to look at them, `tandem comments` lists
 each one's ID, time and words, with what's said and playing there. Do
 each, label the edit with what you did, and put
 `{"removeMarker": {"markerID": "<id>"}}` in the same batch so the comment
@@ -124,27 +124,84 @@ goes with the fix (or `tandem comments resolve <id>` after). Comments move
 with ripple edits, so list them again after one. Leave any you couldn't
 do, and say why when you hand back.
 
-Plan the rounds so his watches count: get the B-roll, sound effects and
-music in before his big watch. Then he watches the whole video about twice,
+Plan the rounds so Jan's watches count: get the B-roll, sound effects and
+music in before the big watch. Then Jan watches the whole video about twice,
 instead of three comment rounds plus separate listens for the sound effects
 and the music (Build Your Own Convex retro).
 
-## What Mike changed
+## What Jan changed
 
 Note the revision you hand back at (`tandem status --revision`). Next
 round, `tandem diff --since <that revision>` lists what changed since,
-clip by clip, grouped by edit with who made it (Mike's edits are by
+clip by clip, grouped by edit with who made it (Jan's edits are by
 `user`) and the times and tracks of each. `tandem history` says where
 each edit was too, and both last across app restarts. `--since` also
 takes an export (`exports/v3.mp4`, read from the `.mp4.tandem` snapshot
 beside it) or a backup in `.tandem/backups`. Never diff `timeline --json`
 against snapshots in Python.
 
-To bring back clips Mike took out or an earlier round he wants again,
+To bring back clips Jan took out or an earlier round Jan wants again,
 `tandem restore --from <revision or export> --clips <ids>` (or
 `--from-time 2:00 --to-time 3:30 --track B-roll`). It's a dry run until
 `--apply`, then one labelled undo step. It restores clips only, not
 transitions, media or markers.
+
+## Jan's style
+
+Jan's own choices win over Mike's below.
+
+### "Put me in a circle"
+
+Jan's camera sits in a circle over the slides or screen, with the slides'
+light cyan border. Use this instead of the cutout or `pipRight`.
+
+- **Where:** bottom right, about 4.5% of the frame's height in from the
+  right and bottom edges. If the slide has what Jan is talking about in
+  that corner, move the circle to the bottom left.
+- **Size:** about 32% of the frame's height across.
+- **Framing:** the face is centred in the circle, with head and shoulders
+  in and a little room above the head.
+- **Border:** 6 px at 1080p (scale it with the canvas), colour `#A8ECF4`.
+- **Layers:** the slides go on the Screen track, under the camera.
+  Full-frame talking-head parts stay full frame.
+
+Tandem has no circle mask, so crop the camera to a square around the face
+and round its corners all the way. Find the face in a `tandem frame`, then
+in the source's pixels (W x H):
+
+- **Square:** side `side` (about 70% of H) centred at `(cx, cy)`. The crop
+  is left `(cx - side/2) / W`, right `(W - cx - side/2) / W`, top
+  `(cy - side/2) / H`, bottom `(H - cy - side/2) / H`.
+- **Circle:** `roundedCorners` radius `side / 2`.
+- **Scale:** whatever makes `side` 32% of the canvas height. For a source
+  the same size as the canvas, that's `0.32 * H / side`.
+- **Position:** the transform places the whole uncropped frame, so
+  `position = (circle centre - scale * (cx - W/2, cy - H/2)) / canvas size`.
+
+Put the result on every camera clip over the slides in one `updateClip`:
+
+```json
+{"updateClip": {"clipIDs": ["clip_cam1", "clip_cam2"], "patch": {"video": {
+  "cutout": {"enabled": false},
+  "crop": {"left": 0, "right": 0, "top": 0, "bottom": 0},
+  "transform": {"scale": 0, "position": {"x": 0, "y": 0}},
+  "effects": [
+    {"type": "roundedCorners", "params": {"radius": 0}},
+    {"type": "border", "params": {"width": 6, "color": {"r": 0.659, "g": 0.925, "b": 0.957}}}
+  ]}}}}
+```
+
+Then check a `tandem frame` of the corner, and frames across the stretch.
+The crop doesn't move, so if Jan leans, the face can slide to the edge of
+the circle.
+
+## Mike's preferences, as defaults
+
+Everything from here on comes from Mike Cann, who built Tandem, and his
+own videos. Use it as a starting point for Jan's videos where it fits
+(the pause rules and the cut checks suit Jan's talking-head takes), but
+ask Jan before applying anything tied to Mike's channel, setup or
+projects (his webcam delay, Convex branding, his music beds and cards).
 
 ## How Mike likes a take cut
 

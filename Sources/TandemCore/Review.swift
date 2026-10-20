@@ -71,7 +71,7 @@ public struct ReviewRemoval: Codable, Equatable, Sendable {
     }
 }
 
-/// One agent batch waiting for Mike's review: who, what and when, and the
+/// One agent batch waiting for Jan's review: who, what and when, and the
 /// clips it touched by ID, so the highlight follows them through later
 /// moves and ripples.
 public struct ReviewEntry: Codable, Equatable, Identifiable, Sendable {

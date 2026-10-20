@@ -9,7 +9,7 @@ public struct CheckRequest: ServiceCall {
     public static let operation = ServiceOperation.check
     public var from: Time?
     public var to: Time?
-    /// Only the stretches agents changed that wait for Mike's review.
+    /// Only the stretches agents changed that wait for Jan's review.
     public var changed: Bool?
     /// Only the checks that need no rendering: gaps, soft pictures and slivers.
     public var quick: Bool?
@@ -187,7 +187,7 @@ extension TandemService {
             ranges = session.review.log.changedRegions(in: project).compactMap { region in
                 TimeRange(start: region.start - Self.checkMargin, end: region.end + Self.checkMargin).intersection(timeline)
             }
-            if ranges.isEmpty { note = "Nothing is waiting for Mike's review, so there was nothing to check." }
+            if ranges.isEmpty { note = "Nothing is waiting for Jan's review, so there was nothing to check." }
         } else {
             let start = request.from ?? .zero
             let end = min(request.to ?? project.duration, project.duration)

@@ -172,7 +172,7 @@ final class CheckAPITests: XCTestCase {
         defer { h.close() }
         let nothing = try await CheckRequest(changed: true).run(on: h.service, context: h.context)
         XCTAssertTrue(nothing.ranges.isEmpty)
-        XCTAssertEqual(nothing.readableText, "Nothing is waiting for Mike's review, so there was nothing to check.")
+        XCTAssertEqual(nothing.readableText, "Nothing is waiting for Jan's review, so there was nothing to check.")
 
         // An agent moves the B-roll to 21 to 26.
         try h.apply(.moveClips(clipIDs: ["clip_brl1"], delta: t(1), includeLinked: false))

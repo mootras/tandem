@@ -256,19 +256,19 @@ public final class MCPServer: @unchecked Sendable {
     ])
 
     static let instructions = """
-    Tandem is Mike's video editor, built for working in turns: you edit, then Mike reviews what you changed in the app, where your edits \
-    stay highlighted until he plays through them or marks them reviewed. Before changing anything, check `status`: if edits are still \
-    waiting for his review, stop and ask him whether to continue with N unreviewed changes. These tools read and edit a .tandem project: the app's copy when the app has it open, \
+    Tandem is Jan's video editor, built for working in turns: you edit, then Jan reviews what you changed in the app, where your edits \
+    stay highlighted until Jan plays through them or marks them reviewed. Before changing anything, check `status`: if edits are still \
+    waiting for Jan's review, stop and ask Jan whether to continue with N unreviewed changes. These tools read and edit a .tandem project: the app's copy when the app has it open, \
     otherwise the file. Start with `timeline` (add words: true to see what's said in each voice clip). Change things with `apply`, a batch \
-    of edit commands applied atomically as one undo step credited to you; label it with what it does (Mike reads the labels), pass \
+    of edit commands applied atomically as one undo step credited to you; label it with what it does (Jan reads the labels), pass \
     expectedRevision from the read you based the edit on (not a fresh status right before applying) so you never edit a timeline that \
     changed under you; Tandem finding new media in the folder doesn't count as a change. Try dryRun: true when unsure. `undo` \
     reverts your last edit (count: n for several); only undo your own. `search` finds a phrase's timeline time, `pauses` lists silences and `tighten` shortens them \
     (a dry run unless apply: true). Look at your work with `frame` and `clip` (a review MP4), and before handing back run `check` with \
     changed: true and fix what it finds (black frames, flickers, green screen that didn't key); its notes (dead air, page changes with no \
-    transition, soft zooms) are judgement calls. Mike's saved segments (his intro, outro and \
-    calls to action) are in `segments_list` and go in with `segments_insert`. Mike leaves comments on the timeline for the next round \
-    ("cut the umm here"): when he asks you to look at them, `comments` lists them; do each, then remove it with removeMarker in the same \
+    transition, soft zooms) are judgement calls. Saved segments (an intro, outro and \
+    calls to action) are in `segments_list` and go in with `segments_insert`. Jan leaves comments on the timeline for the next round \
+    ("cut the umm here"): when Jan asks you to look at them, `comments` lists them; do each, then remove it with removeMarker in the same \
     batch. A camera's picture lags its mic: `sync` sets how late (never slip clips by hand for it); `sync` with files lines \
     another angle or an external mic up with the camera by sound and places it. Transcripts, mattes and proxies are \
     made in the background: `wait` waits for them (never poll in a loop), and `transcribe` makes a transcript of any file with sound. Only change the project through \
@@ -505,7 +505,7 @@ enum MCPTools {
     static let all: [Tool] = [
         Tool(
             name: "status", title: "Project status",
-            description: "The project's name, revision, length, unsaved changes, who has it open, undo and redo, background jobs, and agent edits still waiting for Mike's review (reviewPending).",
+            description: "The project's name, revision, length, unsaved changes, who has it open, undo and redo, background jobs, and agent edits still waiting for Jan's review (reviewPending).",
             operation: .status, properties: [:], readOnly: true, idempotent: true
         ),
         Tool(
@@ -665,7 +665,7 @@ enum MCPTools {
         ),
         Tool(
             name: "diff", title: "What changed since",
-            description: "What changed on the timeline since a revision, a backup or an export, clip by clip: added, removed, moved, trimmed, and changed settings (transform, gain, keyframes, effects...), with timeline times and track names. Since a revision, it's grouped by edit with who made it (the edit history lasts across restarts). An export is read from the .mp4.tandem snapshot beside it. Use it to find what Mike changed since you last looked, instead of diffing timeline JSON yourself. Pass json: true for each clip before and after.",
+            description: "What changed on the timeline since a revision, a backup or an export, clip by clip: added, removed, moved, trimmed, and changed settings (transform, gain, keyframes, effects...), with timeline times and track names. Since a revision, it's grouped by edit with who made it (the edit history lasts across restarts). An export is read from the .mp4.tandem snapshot beside it. Use it to find what Jan changed since you last looked, instead of diffing timeline JSON yourself. Pass json: true for each clip before and after.",
             operation: .diff,
             properties: [
                 "since": S.string("A revision (95), a .tandem file (a backup in .tandem/backups or an export's .mp4.tandem snapshot), or an export (exports/v3.mp4). Paths are absolute or relative to the project folder.")
@@ -708,12 +708,12 @@ enum MCPTools {
         ),
         Tool(
             name: "check", title: "Check for problems",
-            description: "Looks for what Mike would otherwise catch in review: black frames and gaps, one-frame flickers, green screens that didn't key and white blocks that come and go. Notes, which don't fail it, are judgement calls: pictures zoomed past their own pixels; dead air (0.8 s or more of a still picture with nothing said and no sound effect or music swell: cut it, or keep it if the pause earns it); and page changes on the screen recording with no transition (push them if they're pages in an explainer or slides); and slivers, clips or gaps between clips on a track shorter than a frame. Renders the frames small, so a minute takes seconds. Run it with changed: true on what you changed before handing back. With cuts: true it checks only for words clipped at cuts, and gives the trims that fix them. ok is false when it finds a problem.",
+            description: "Looks for what Jan would otherwise catch in review: black frames and gaps, one-frame flickers, green screens that didn't key and white blocks that come and go. Notes, which don't fail it, are judgement calls: pictures zoomed past their own pixels; dead air (0.8 s or more of a still picture with nothing said and no sound effect or music swell: cut it, or keep it if the pause earns it); and page changes on the screen recording with no transition (push them if they're pages in an explainer or slides); and slivers, clips or gaps between clips on a track shorter than a frame. Renders the frames small, so a minute takes seconds. Run it with changed: true on what you changed before handing back. With cuts: true it checks only for words clipped at cuts, and gives the trims that fix them. ok is false when it finds a problem.",
             operation: .check,
             properties: [
                 "from": time("Start. Default 0."),
                 "to": time("End. Default the end of the timeline."),
-                "changed": S.boolean("Only the stretches agents changed that are waiting for Mike's review."),
+                "changed": S.boolean("Only the stretches agents changed that are waiting for Jan's review."),
                 "quick": S.boolean("Only the checks that need no rendering: gaps, slivers and pictures zoomed past their own pixels. No dead air or page changes."),
                 "cuts": S.boolean("Only the cuts on the speech tracks, from the files' own sound (nothing rendered): a clippedWord problem where the voice runs right up to a cut, full band or above 4 kHz (a final \"s\"). Each has cut.fix, a trim into the nearest real pause (0.08 s quiet in both bands) within 0.3 s; commands holds them all, latest first, to apply with expectedRevision: revision. Run it after cutting the take."),
                 "width": S.integer("How wide frames are rendered for the scan. Default 384.")
@@ -738,8 +738,8 @@ enum MCPTools {
             readOnly: false
         ),
         Tool(
-            name: "comments", title: "Mike's comments",
-            description: "The comments Mike left on the timeline for you, earliest first: each one's ID, time and what he asked, with what's said a few seconds either side and the clips playing there. Do what each asks, label the edit with what you did, and remove the comment in the same apply batch with {\"removeMarker\": {\"markerID\": \"<id>\"}}. Comments move with ripple edits, so read them again after one.",
+            name: "comments", title: "Jan's comments",
+            description: "The comments Jan left on the timeline for you, earliest first: each one's ID, time and what Jan asked, with what's said a few seconds either side and the clips playing there. Do what each asks, label the edit with what you did, and remove the comment in the same apply batch with {\"removeMarker\": {\"markerID\": \"<id>\"}}. Comments move with ripple edits, so read them again after one.",
             operation: .comments, properties: [:], readOnly: true, idempotent: true
         ),
         Tool(
@@ -772,7 +772,7 @@ enum MCPTools {
         ),
         Tool(
             name: "screenshot", title: "Screenshot the app",
-            description: "Captures the Tandem app's window, to see what Mike sees. Needs the app open.",
+            description: "Captures the Tandem app's window, to see what Jan sees. Needs the app open.",
             operation: .screenshot, properties: ["output": S.string("Save the PNG here instead of returning it.")], readOnly: true
         ),
         Tool(
@@ -840,7 +840,7 @@ enum MCPTools {
         ),
         Tool(
             name: "watch", title: "Wait for a change",
-            description: "Waits until the project moves past a revision (default: now), for example to react when Mike edits in the app. Returns the changes, or changed: false after the timeout.",
+            description: "Waits until the project moves past a revision (default: now), for example to react when Jan edits in the app. Returns the changes, or changed: false after the timeout.",
             operation: .watch,
             properties: ["revision": S.integer("Wait for a revision after this one."), "timeout": S.number("Seconds to wait. Default 30, at most 600.")],
             readOnly: true, idempotent: true
