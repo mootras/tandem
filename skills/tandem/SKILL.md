@@ -150,44 +150,50 @@ transitions, media or markers.
 
 Jan's own choices win over Mike's below.
 
-- **"Put me in a circle":** over slides or a screen, Jan's camera goes in a
-  circle bottom right with the slides' light cyan border, never the
-  cutout or pipRight (Webcam Test 1, 2026-10-20: "exactly what we should
-  go for"). Tandem has no circle mask, so crop the camera to a square and
-  round its corners all the way. The slides go on the Screen track, under
-  the camera; full-frame talking-head stretches stay full frame. One
-  `updateClip` with `clipIDs` of every camera clip over the slides:
+### "Put me in a circle"
 
-  ```json
-  {"updateClip": {"clipIDs": ["clip_cam1", "clip_cam2"], "patch": {"video": {
-    "cutout": {"enabled": false},
-    "crop": {"left": 0.391, "right": 0.2135, "top": 0.241, "bottom": 0.0556},
-    "transform": {"scale": 0.45, "position": {"x": 0.846, "y": 0.756}},
-    "effects": [
-      {"type": "roundedCorners", "params": {"radius": 380}},
-      {"type": "border", "params": {"width": 6, "color": {"r": 0.659, "g": 0.925, "b": 0.957}}}
-    ]}}}}
-  ```
+Jan's camera sits in a circle over the slides or screen, with the slides'
+light cyan border. Use this instead of the cutout or `pipRight`.
 
-  Those numbers fit Jan in the armchair in a 1920x1080 take, with the face
-  centred at (1130, 640) in the source. For a new setup, look at a
-  `tandem frame` and redo them, in source pixels (W x H, here 1920 x 1080):
-  - a square of side 760 (about 70% of H) centred a little below the eyes
-    at (cx, cy), so head and shoulders fit: crop left `(cx - 380) / W`,
-    right `(W - cx - 380) / W`, top `(cy - 380) / H`, bottom
-    `(H - cy - 380) / H`;
-  - `radius` half the square's side (380), so the corners meet in a circle;
-  - scale 0.45 makes the circle 342 px across on a 1080p canvas. Put its
-    centre 48 px in from the right and bottom edges, at (1701, 861) on
-    1920x1080. The transform positions the whole uncropped frame, so
-    `position = (centre - 0.45 * (cx - W/2, cy - H/2)) / (W, H)`;
-  - the border is `#A8ECF4`, the cyan of the slides' shapes, 6 px wide.
+- **Where:** bottom right, about 4.5% of the frame's height in from the
+  right and bottom edges. If the slide has what Jan is talking about in
+  that corner, move the circle to the bottom left.
+- **Size:** about 32% of the frame's height across.
+- **Framing:** the face is centred in the circle, with head and shoulders
+  in and a little room above the head.
+- **Border:** 6 px at 1080p (scale it with the canvas), colour `#A8ECF4`.
+- **Layers:** the slides go on the Screen track, under the camera.
+  Full-frame talking-head parts stay full frame.
 
-  Check a `tandem frame` crop of the corner, and frames across the
-  stretch: the crop is fixed, so a lean can slide the face to the edge.
-  If the slide has what Jan is talking about bottom right, move the
-  circle bottom left: centre 48 px in from the left edge, then work out
-  `position` again.
+Tandem has no circle mask, so crop the camera to a square around the face
+and round its corners all the way. Find the face in a `tandem frame`, then
+in the source's pixels (W x H):
+
+- **Square:** side `side` (about 70% of H) centred at `(cx, cy)`. The crop
+  is left `(cx - side/2) / W`, right `(W - cx - side/2) / W`, top
+  `(cy - side/2) / H`, bottom `(H - cy - side/2) / H`.
+- **Circle:** `roundedCorners` radius `side / 2`.
+- **Scale:** whatever makes `side` 32% of the canvas height. For a source
+  the same size as the canvas, that's `0.32 * H / side`.
+- **Position:** the transform places the whole uncropped frame, so
+  `position = (circle centre - scale * (cx - W/2, cy - H/2)) / canvas size`.
+
+Put the result on every camera clip over the slides in one `updateClip`:
+
+```json
+{"updateClip": {"clipIDs": ["clip_cam1", "clip_cam2"], "patch": {"video": {
+  "cutout": {"enabled": false},
+  "crop": {"left": 0, "right": 0, "top": 0, "bottom": 0},
+  "transform": {"scale": 0, "position": {"x": 0, "y": 0}},
+  "effects": [
+    {"type": "roundedCorners", "params": {"radius": 0}},
+    {"type": "border", "params": {"width": 6, "color": {"r": 0.659, "g": 0.925, "b": 0.957}}}
+  ]}}}}
+```
+
+Then check a `tandem frame` of the corner, and frames across the stretch.
+The crop doesn't move, so if Jan leans, the face can slide to the edge of
+the circle.
 
 ## Mike's preferences, as defaults
 
