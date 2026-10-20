@@ -90,7 +90,7 @@ public struct StatusResult: Codable, Sendable {
     /// What won't look right, with the fix: titles in a font that isn't
     /// installed. Optional so an older app's answer still reads.
     public var warnings: [String]?
-    /// Agent edits waiting for Mike's review, oldest first. Read-only:
+    /// Agent edits waiting for Jan's review, oldest first. Read-only:
     /// only Mark reviewed in the app clears them. Nil from an older app.
     public var reviewPending: [PendingReview]?
 }

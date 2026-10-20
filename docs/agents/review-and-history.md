@@ -63,7 +63,7 @@ their own beside it, and reports, with the clips on screen there:
     cut it.
 
 Run `tandem check --changed` before handing an edit back: it checks only
-what agents changed that's waiting for Mike's review, half a second either
+what agents changed that's waiting for Jan's review, half a second either
 side. It exits 1 when it finds a problem; notes never fail it. `--quick`
 skips rendering, so it only finds gaps, soft pictures, slivers and nothing
 that needs the screen recordings scanned (page changes, low frame rates).
@@ -276,7 +276,7 @@ the picture directly, so you can look at the result of an edit.
   watched all of it) or marks them reviewed, and he steps from one to
   the next. Label batches with what they do (`"B-roll over the config
   file"`), since that's what he reads when he hovers one.
-- `tandem status` lists your edits still waiting for him as `waiting for
-  Mike's review` (`reviewPending` in JSON: each edit's label, author, date
-  and the clip IDs it added or changed). It's read-only; only Mike clears
+- `tandem status` lists your edits still waiting for Jan as `waiting for
+  Jan's review` (`reviewPending` in JSON: each edit's label, author, date
+  and the clip IDs it added or changed). It's read-only; only Jan clears
   it, from the app.
